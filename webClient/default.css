@@ -1,0 +1,12 @@
+#box
+{
+position: absolute;
+left: 0px;
+background: red;
+width: 10368px;
+height: 720px;
+}
+
+#imageDirContents{
+visibility: hidden;
+}
