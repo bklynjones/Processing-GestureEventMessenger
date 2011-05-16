@@ -20,9 +20,9 @@ public class NewMotionTester extends PApplet {
 	// How different must a pixel be to be a "motion" pixel
 
 	//---Variables for Socketr---\\
-	Server msgSocket;
+	//Server msgSocket;
 	Server myServer;
-	public Client thisClient; // never read in orginal code
+	Server myServerTwo;
 	String origin;
 	String host;
 	String whatClientSaid;
@@ -44,7 +44,8 @@ public class NewMotionTester extends PApplet {
 		  
 		  	//--Instansiate Socket Server--\\
 			myServer = new Server(this, 1234);
-			msgSocket = myServer;
+			myServerTwo = new Server(this,4567);
+			//msgSocket = myServer;
 
 		  // Initialixze array values to zero
 		  for (int i=0; i < xpos.length; i ++) {
@@ -59,7 +60,8 @@ public class NewMotionTester extends PApplet {
 
 		public void draw() {
 			//--Connect to Browser--\\
-			handShake();
+			handShake(myServer.available());
+			handShake(myServerTwo.available());
 			
 		  background(255);
 		  //Shift all the readings by one in their index
@@ -157,29 +159,39 @@ public class NewMotionTester extends PApplet {
 		  noStroke();
 
 
-//		  if (second()%3==0) {
-//		    for (int i=0; i < xpos.length; i ++) {
-//		      xpos[i]=video.width/2;
-//		      ypos[i]=video.width/2;
-//		    }
-//		  }
+
 
 
 		  if ((locationAverageX() < (width*.20) +10) && (locationAverageY() > height - height*3)) {
 		    if (second()%2==0) {
 		     // println("right");
-		      gestureBuffer(20,"r");
+		      gestureBuffer(myServer,20,"r");
 		    }
 		  }
 		  else if ((locationAverageX() > (width - (width*.20) +10) && (locationAverageY() > height - height*3))) {
 		    if (second()%2 == 0) {
 		    //  println("left");
-		      gestureBuffer(20,"l");
+		      gestureBuffer(myServer,20,"l");
 		      //loc =  video.width/2 + video.height/2*video.width;
 		    }
 		  }
-		  // println(second());
-		  // println("x = :" + locationAverageX() + "y= :" + locationAverageY());
+		  
+		  if ((locationAverageX() < (width*.20) +10) && (locationAverageY() > height - height*3)) {
+			    if (second()%2==0) {
+			     // println("right");
+			      //gestureBuffer(myServerTwo,20,"e");
+			    	msgBrowser(myServerTwo,"e");
+			    }
+			  }
+			  else if ((locationAverageX() > (width - (width*.20) +10) && (locationAverageY() > height - height*3))) {
+			    if (second()%2 == 0) {
+			    //  println("left");
+			      //gestureBuffer(myServerTwo,20,"k");
+			    	msgBrowser(myServerTwo,"k");
+			      //loc =  video.width/2 + video.height/2*video.width;
+			    }
+			  }
+		  
 		}
 	
 	public static void main(String _args[]) {
@@ -216,9 +228,9 @@ int locationAverageX() {
 
 	
 
-	void handShake() {
+	void handShake(Client tThisClient) {
 
-		thisClient = myServer.available();
+		Client thisClient = tThisClient;
 		if (thisClient == null) {
 			return;
 		}
@@ -262,8 +274,9 @@ int locationAverageX() {
 	
 	boolean isWebSocket = false;
 	
-	public void gestureBuffer(int ttrigger, String tMsgToBeBuffered){
+	public void gestureBuffer(Server tMsgSocket,int ttrigger, String tMsgToBeBuffered){
 		
+		Server msgSocket = tMsgSocket;
 		int trigger = ttrigger;
 		String msgToBeBuffered = tMsgToBeBuffered;
 		
@@ -287,7 +300,7 @@ int locationAverageX() {
 					gBuffer.clear();
 					gBuffer.trimToSize();
 					String fireMsg = msgToBeBuffered;
-					msgBrowser(fireMsg);
+					msgBrowser(msgSocket,fireMsg);
 					println(fireMsg + " is off to the browser!");
 					
 				// reset location of loc 
@@ -300,9 +313,9 @@ int locationAverageX() {
 		}
 		
 	}
-void msgBrowser(String tMsg ) {
+void msgBrowser(Server tMsgSocket, String tMsg ) {
 	
-		
+	Server msgSocket = tMsgSocket;
 		String msg = tMsg;
 		// When I call this outside of the handshake function it all falls apart
 
