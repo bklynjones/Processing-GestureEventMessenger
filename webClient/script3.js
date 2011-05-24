@@ -1,4 +1,7 @@
 
+		var classArray = new Array();
+		classArray = ["poszero","posone","postwo","posthree","posfour","posfive","possix","posseven","poseight","posnine"];
+		var z=0;
 // galleryarray is a global defined by the php at the head of the page
 
 $(document).ready(function() {
@@ -59,12 +62,14 @@ $(document).ready(function() {
 	     };
 
 		//First socket: handles gesture events
+		
+
 		ws.onmessage = function(evt) {
 			
 			var $box = $('#box');// target element with id: 'box'
  			var position = $box.position();// return the value of the elements top left corner
 			
-			console.log(position.left);
+			//console.log(position.left);
 			
 			if(evt.data === "l"){
 				if(position.left < 0){
@@ -73,15 +78,9 @@ $(document).ready(function() {
 			}
 			else if(evt.data === "r"){
 				//if((position.left) *-1 ===11496){
-					$('#box').animate({"left": '-=0'},"slow");
-				//}
-				//else{
-					$('#box').animate({"left": '-=1916'},"slow");
-				//}
-				
-			
-		// $("<b>" + evt.data + "</b>").appendTo('div')
-			}
+					$('#box').addClass(classArray[z]);
+					z++;
+					console.log(i);							}
 		};
 		
 		// Second socket:  used for UI feeback 
@@ -136,19 +135,13 @@ $(document).ready(function() {
 		
 	
 });//End document
-$('#box').click(function() 
+$('#bod').click(function() 
 	{
-	
-	$(this).css({left: '-13416'});
-		/*
-if ($('#leftBar').css('display')==='none')
-			{
-				$('#leftBar').fadeIn();
-			
-			}
-		else{
-				$('#leftBar').fadeOut();
-				
-		}
-*/
-	});
+	if( z ===7){
+		z=0;
+		$(this).removeClass().addClass('a1 ' + classArray[z]); 
+	}
+	$(this).addClass(classArray[z]);
+	z++;
+	console.log(z);		
+});

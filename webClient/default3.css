@@ -7,7 +7,7 @@ width:15328;
 position: absolute;
 left: 0px;
 background: black;
-width: 3836;
+width: 1916;
 height: 1278px;
 }
 
@@ -105,7 +105,7 @@ opacity: .3;
 
 /* Class "keyframes" */
 
-.start{
+.poszero{
 -webkit-transform:translate(0px);
 -webkit-transition:all 2s ease-in;
 }
@@ -119,6 +119,17 @@ opacity: .3;
 -webkit-transform:translate(-5748px);
 }
 .posfour{
--webkit-transform:translate(0px)}
+-webkit-transform:translate(-7664px);
+}
+.posfive{
+-webkit-transform:translate(-9580px);
+}
+.possix{
+-webkit-transform:translate(-11496px);
+}
+.posseven{
+-webkit-transform:translate(-13412px);
+}
+
 
 
